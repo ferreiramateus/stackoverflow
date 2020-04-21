@@ -13,7 +13,7 @@ setuptools.setup(
     description="Stack Overflow package",
     long_description='stack_overflow bot',
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/ferreiramateus/stackoverflow.git",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

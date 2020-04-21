@@ -1,58 +1,45 @@
-"""Método leitura de arquivos de configuração."""
+"""Provide some widely useful utilities."""
 
 import pandas as pd
 
-def read_credentials_file(file_path):
+def read_credentials(file_path):
     """
-    Esse método faz a leitura das credenciais dos sites que se deseja fazer o scraping, a partir de um excel.
+    This method reads the credentials of the sites to be scraped from an excel.
 
     Input:
 
-    file_path = '/gr_decio/src/input/credenciais/credenciais.xlsx'
+    file_path = '/stackoverflow/src/input/credentials.xlsx'
 
     Output:
 
-    credenciais_dict = {'usuario':
+    credenciais_dict = {'user':
                                     {
-                                     'Beira Rio': '00000',
-                                     'Beira Rio (Empresa 46)': '00000',
-                                     'Urbanos': '0000',
-                                     'Urbanos Posto Alto (Empresa 01)': '00000'
+                                     'user': 'xxxxx',
                                      },
-                        'senha':
+                        'password':
                                     {
-                                    'Beira Rio': 'XXXX',
-                                    'Beira Rio (Empresa 46)': 'XXXX',
-                                    'Urbanos': 'XXXX',
-                                    'Urbanos Posto Alto (Empresa 01)': 'XXXX'
+                                    'user': 'XXXXXX',
                                     }
                             }
 
-    O Output é uma tupla: (status, config_dict)
+    The output is a tuple: (status, config_dict)
 
-    Como usar:
+    How to Use:
 
     import common.utils as ldc
 
-    status, credenciais_dict = ldc.read_credentials_file(file_path)
+    status, credentials_dict = ldc.read_credentials(file_path)
 
     """
 
     try:
-        credentials_file = pd.read_excel(
-                                         file_path,
-                                         dtype = str
-                                         )
-        credentials_df = credentials_file[['base', 'usuario', 'senha']]
-        credentials_df.drop_duplicates(
-                                         subset = ['base', 'usuario', 'senha'],
-                                         inplace = True
-                                         )
-
+        credentials_file = pd.read_excel(file_path, dtype=str)
+        credentials_file.set_index('portal', inplace=True)
+        credentials_dict = credentials_file.to_dict()
         status = 1
 
     except Exception as e:
-        credentials_df = e
+        credentials_dict = e
         status = 0
 
-    return (status, credentials_df)
+    return (status, credentials_dict)
